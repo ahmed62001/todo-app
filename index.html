@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تطبيق إدارة المهام اليومية لتنظيم المهام وتحقيق الأهداف">
+    <title>إدارة المهام اليومية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="header-top">
+                <div class="theme-switcher">
+                    <i class="fas fa-sun light-theme-icon active" title="الوضع الفاتح"></i>
+                    <i class="fas fa-moon dark-theme-icon" title="الوضع الداكن"></i>
+                </div>
+                <div class="language-switcher">
+                    <select id="languageSelect" aria-label="تغيير اللغة">
+                        <option value="ar">العربية</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+            </div>
+            <h1 data-key="appName">إدارة المهام اليومية</h1>
+            <p data-key="tagline">نظم مهامك وحقق أهدافك</p>
+        </header>
+
+        <section class="task-input-section">
+            <div class="input-container">
+                <input type="text" id="taskInput" placeholder="أدخل مهمة جديدة..." aria-label="إدخال مهمة جديدة">
+                <div class="reminder-container">
+                    <input type="text" id="reminderInput" placeholder="تحديد موعد التذكير" aria-label="تحديد موعد التذكير" required>
+                    <span class="reminder-calendar-icon"><i class="fas fa-calendar-alt"></i></span>
+                    <span class="reminder-error" data-key="futureTimeError">يرجى اختيار وقت في المستقبل</span>
+                    <button class="reminder-btn" aria-label="تفعيل/إلغاء التذكير" title="تفعيل التذكير">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                </div>
+                <button class="add-btn" data-key="addTask">إضافة</button>
+            </div>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn" data-filter="all" data-key="allTasks">الكل (<span class="all-count">0</span>)</button>
+                <button class="filter-btn" data-filter="pending" data-key="pendingTasks">معلقة (<span class="pending-count">0</span>)</button>
+                <button class="filter-btn" data-filter="completed" data-key="completedTasks">مكتملة (<span class="completed-count">0</span>)</button>
+                <button class="filter-btn" data-filter="reminders" data-key="tasksWithReminders">لها تذكير (<span class="reminder-count">0</span>)</button>
+            </div>
+            <button class="clear-btn" data-key="clearCompleted">حذف المكتملة</button>
+        </section>
+
+        <section class="tasks-container">
+            <ul class="tasks-list" role="list"></ul>
+            <div class="empty-state" role="alert">
+                <i class="fas fa-tasks"></i>
+                <h3 data-key="noTasks">لا توجد مهام</h3>
+                <p data-key="addFirstTask">أضف مهمة جديدة لتبدأ</p>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <p data-key="footerText">© 2025 تطبيق إدارة المهام - صُمم بواسطة احمد محمد <i class="fas fa-heart"></i></p>
+        </footer>
+    </div>
+
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-key="reminderTitle">تذكير بمهمة</h3>
+                <button class="close-modal" aria-label="إغلاق نافذة التذكير">×</button>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-bell reminder-icon"></i>
+                <p id="reminderMessage" data-key="reminderMessage">حان وقت تنفيذ المهمة!</p>
+                <div class="reminder-task" aria-live="polite"></div>
+                <div class="reminder-time"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="done-btn" data-key="markDone"><i class="fas fa-check"></i> تم الإنجاز</button>
+                <button class="snooze-btn" data-key="snoozeReminder"><i class="fas fa-clock"></i> تأجيل 5 دقائق</button>
+                <button class="dismiss-btn" data-key="dismissReminder"><i class="fas fa-times"></i> إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="reminderSound" src="./assets/sounds/reminder.mp3" preload="auto"></audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

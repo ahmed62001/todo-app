@@ -1,0 +1,903 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --header-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --modal-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    --border-color: #e9ecef;
+    --shadow: 0 20px 40px rgba(0,0,0,0.1);
+    --focus-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    --transition: all 0.3s ease;
+
+    /* Light Theme */
+    --body-bg-light: linear-gradient(135deg, #e0f2f7 0%, #c1e4f0 100%);
+    --container-bg-light: white;
+    --text-color-light: #333;
+    --header-text-light: white;
+    --section-bg-light: #f8f9fa;
+    --input-border-light: #e9ecef;
+    --input-bg-light: white;
+    --button-bg-light: var(--primary-gradient);
+    --button-text-light: white;
+    --filter-btn-bg-light: white;
+    --filter-btn-border-light: var(--border-color);
+    --filter-btn-text-light: #333;
+    --task-item-bg-light: white;
+    --task-item-border-light: var(--border-color);
+    --empty-state-color-light: #6c757d;
+    --footer-bg-light: #f8f9fa;
+    --footer-text-light: #6c757d;
+}
+
+[data-theme="dark"] {
+    --body-bg-light: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    --container-bg-light: #3b4d61;
+    --text-color-light: #e0e0e0;
+    --header-text-light: white;
+    --section-bg-light: #34495e;
+    --input-border-light: #4a6177;
+    --input-bg-light: #2c3e50;
+    --button-bg-light: linear-gradient(135deg, #5a7d9a 0%, #4a6177 100%);
+    --button-text-light: white;
+    --filter-btn-bg-light: #4a6177;
+    --filter-btn-border-light: #5a7d9a;
+    --filter-btn-text-light: #e0e0e0;
+    --task-item-bg-light: #34495e;
+    --task-item-border-light: #4a6177;
+    --empty-state-color-light: #b0c4d8;
+    --footer-bg-light: #34495e;
+    --footer-text-light: #b0c4d8;
+}
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--body-bg-light);
+    min-height: 100vh;
+    direction: rtl;
+    padding: 1rem;
+    line-height: 1.6;
+    color: var(--text-color-light);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--container-bg-light);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-header {
+    background: var(--header-gradient);
+    color: var(--header-text-light);
+    padding: 2.5rem 1.875rem;
+    text-align: center;
+    position: relative; /* For positioning theme switcher */
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: absolute;
+    top: 1rem;
+    width: calc(100% - 3.75rem); /* Adjust for padding */
+    left: 1.875rem;
+}
+
+.theme-switcher {
+    display: flex;
+    gap: 0.8rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.theme-switcher i.active {
+    color: white;
+    text-shadow: 0 0 5px rgba(255,255,255,0.8);
+}
+
+.theme-switcher i:hover {
+    color: white;
+}
+
+.language-switcher select {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    padding: 0.3rem 0.6rem;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none; /* Remove default select arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: left 0.5rem center; /* Position arrow on the left for RTL */
+    padding-right: 2rem; /* Make space for the arrow */
+    direction: rtl; /* Ensure text is RTL */
+    text-align: right; /* Align text to the right */
+}
+
+.language-switcher select option {
+    background: #4facfe; /* Background for dropdown options */
+    color: white;
+}
+
+.app-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.625rem;
+    font-weight: 700;
+    margin-top: 2rem; /* Space for header-top */
+}
+
+.app-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.task-input-section {
+    padding: 1.875rem;
+    background: var(--section-bg-light);
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.input-container {
+    display: flex;
+    gap: 0.9375rem;
+    max-width: 700px;
+    margin: 0 auto;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center;
+}
+
+#taskInput {
+    flex: 1;
+    min-width: 200px; /* Ensure input doesn't get too small */
+    padding: 0.9375rem 1.25rem;
+    border: 2px solid var(--input-border-light);
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+    background: var(--input-bg-light);
+    color: var(--text-color-light);
+}
+
+#taskInput:focus {
+    border-color: #4facfe;
+    box-shadow: var(--focus-shadow);
+}
+
+.reminder-container {
+    display: flex;
+    gap: 0.3125rem;
+    align-items: center;
+    position: relative;
+    flex-grow: 1; /* Allow reminder container to grow */
+    max-width: 300px; /* Limit its max width */
+}
+
+#reminderInput {
+    padding: 0.75rem 2.5rem 0.75rem 1rem; /* Adjust padding for icon */
+    border: 2px solid var(--input-border-light);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition);
+    width: 100%; /* Make it take full width of its container */
+    background: var(--input-bg-light);
+    color: var(--text-color-light);
+    direction: ltr; /* Keep LTR for date/time input */
+    text-align: right;
+    display: none; /* Hidden by default */
+    padding-right: 35px; /* Space for the calendar icon */
+}
+
+#reminderInput:focus {
+    border-color: #4facfe;
+    box-shadow: var(--focus-shadow);
+}
+
+.reminder-error {
+    display: none;
+    position: absolute;
+    bottom: -1.5rem;
+    /* Adjust position based on text direction */
+    right: unset;
+    left: 0; /* For RTL, error message on the left */
+    font-size: 0.75rem;
+    color: #dc3545;
+    white-space: nowrap;
+}
+
+.reminder-calendar-icon {
+    position: absolute;
+    right: 10px; /* Position on the right for RTL layout */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    cursor: pointer;
+    transition: var(--transition);
+    display: none; /* Hidden by default */
+    z-index: 2; /* Ensure it's above the input */
+}
+
+.reminder-calendar-icon:hover {
+    color: #4facfe;
+}
+
+.reminder-btn {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--input-border-light);
+    background: var(--input-bg-light);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: #6c757d;
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.reminder-btn:hover {
+    border-color: #4facfe;
+    color: #4facfe;
+}
+
+.reminder-btn.active {
+    background: #4facfe;
+    color: white;
+    border-color: #4facfe;
+}
+
+.add-btn {
+    padding: 0.9375rem 1.875rem;
+    background: var(--button-bg-light);
+    color: var(--button-text-light);
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.filter-section {
+    padding: 1.25rem 1.875rem;
+    background: var(--section-bg-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.9375rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.625rem 1.25rem;
+    border: 2px solid var(--filter-btn-border-light);
+    background: var(--filter-btn-bg-light);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--filter-btn-text-light);
+}
+
+.filter-btn:hover {
+    border-color: #4facfe;
+    color: #4facfe;
+}
+
+.filter-btn.active {
+    background: #4facfe;
+    color: white;
+    border-color: #4facfe;
+}
+
+.clear-btn {
+    padding: 0.625rem 1.25rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.clear-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.tasks-container {
+    min-height: 400px;
+    padding: 1.875rem;
+    background: var(--container-bg-light); /* Ensure it matches container for smooth transition */
+    transition: background 0.3s ease;
+}
+
+.tasks-list {
+    list-style: none;
+}
+
+.task-item {
+    background: var(--task-item-bg-light);
+    border: 1px solid var(--task-item-border-light);
+    border-radius: 15px;
+    margin-bottom: 0.9375rem;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9375rem;
+    transition: var(--transition);
+    animation: slideIn 0.3s ease;
+    position: relative;
+    color: var(--text-color-light);
+}
+
+.task-item.has-reminder {
+    border-right: 4px solid #ffc107; /* Changed to border-right for RTL */
+    border-left: 1px solid var(--task-item-border-light); /* Re-add original border */
+}
+
+.task-item.reminder-due {
+    border-right: 4px solid #dc3545; /* Changed to border-right for RTL */
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); } /* Adjusted for RTL */
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+    background: var(--section-bg-light);
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4facfe;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.task-checkbox.checked {
+    background: #4facfe;
+}
+
+.task-checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.task-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+}
+
+.task-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    word-break: break-word;
+    color: var(--text-color-light);
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.task-reminder-info {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.task-reminder-info.due {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.task-reminder-info.overdue {
+    color: #dc3545;
+    font-weight: 700;
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.625rem;
+    flex-shrink: 0;
+}
+
+.edit-btn, .delete-btn, .reminder-action-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #e0a800;
+    transform: scale(1.1);
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.reminder-action-btn {
+    background: #17a2b8;
+    color: white;
+}
+
+.reminder-action-btn:hover {
+    background: #138496;
+    transform: scale(1.1);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3.75rem 1.875rem;
+    color: var(--empty-state-color-light);
+    transition: color 0.3s ease;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1.25rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.625rem;
+}
+
+.app-footer {
+    background: var(--footer-bg-light);
+    padding: 1.25rem;
+    text-align: center;
+    color: var(--footer-text-light);
+    border-top: 1px solid var(--border-color);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.app-footer i {
+    color: #dc3545;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--container-bg-light);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    animation: slideUp 0.3s ease;
+    box-shadow: var(--shadow);
+    color: var(--text-color-light);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    padding: 1.25rem 1.5625rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--modal-gradient);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.close-modal:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.modal-body {
+    padding: 1.875rem 1.5625rem;
+    text-align: center;
+}
+
+.reminder-icon {
+    font-size: 3rem;
+    color: #ff6b6b;
+    margin-bottom: 1.25rem;
+}
+
+#reminderMessage {
+    font-size: 1.1rem;
+    color: var(--text-color-light);
+    margin-bottom: 0.9375rem;
+}
+
+.reminder-task {
+    background: var(--section-bg-light);
+    padding: 0.9375rem;
+    border-radius: 10px;
+    margin-bottom: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-color-light);
+    border-right: 4px solid #ff6b6b; /* Changed to border-right for RTL */
+    border-left: none;
+}
+
+.reminder-time {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.625rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.done-btn, .snooze-btn, .dismiss-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.done-btn {
+    background: #28a745;
+    color: white;
+}
+
+.done-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.snooze-btn {
+    background: #ffc107;
+    color: #212529;
+}
+
+.snooze-btn:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+}
+
+.dismiss-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.dismiss-btn:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.task-text-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #4facfe;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    background: var(--input-bg-light);
+    color: var(--text-color-light);
+}
+
+.save-btn, .cancel-btn {
+    padding: 0.5rem 0.9375rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.save-btn {
+    background: #28a745;
+    color: white;
+    margin-right: 0.3125rem; /* Adjusted for RTL */
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #218838;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.9375rem 1.875rem;
+    border-radius: 8px;
+    z-index: 1001;
+    min-width: 200px;
+    text-align: center;
+}
+
+.alert.success {
+    background: #28a745;
+    color: white;
+}
+
+.alert.error {
+    background: #dc3545;
+    color: white;
+}
+
+.alert.info {
+    background: #17a2b8;
+    color: white;
+}
+
+/* Flatpickr overrides for dark theme */
+[data-theme="dark"] .flatpickr-calendar {
+    background: var(--section-bg-light);
+    border: 1px solid var(--input-border-light);
+    color: var(--text-color-light);
+}
+
+[data-theme="dark"] .flatpickr-day {
+    color: var(--text-color-light);
+}
+
+[data-theme="dark"] .flatpickr-day.selected,
+[data-theme="dark"] .flatpickr-day.selected:hover {
+    background: #4facfe;
+    border-color: #4facfe;
+    color: white;
+}
+
+[data-theme="dark"] .flatpickr-day.today {
+    border-color: #4facfe;
+}
+
+[data-theme="dark"] .flatpickr-day.flatpickr-disabled,
+[data-theme="dark"] .flatpickr-day.prevMonthDay,
+[data-theme="dark"] .flatpickr-day.nextMonthDay {
+    color: #6c757d;
+}
+
+[data-theme="dark"] .flatpickr-current-month .flatpickr-monthDropdown-months,
+[data-theme="dark"] .flatpickr-current-month .numInputWrapper span,
+[data-theme="dark"] .flatpickr-time input.flatpickr-hour,
+[data-theme="dark"] .flatpickr-time input.flatpickr-minute {
+    color: var(--text-color-light);
+    background: var(--input-bg-light);
+    border: 1px solid var(--input-border-light);
+}
+
+[data-theme="dark"] .flatpickr-current-month .flatpickr-monthDropdown-months:hover,
+[data-theme="dark"] .flatpickr-time input.flatpickr-hour:hover,
+[data-theme="dark"] .flatpickr-time input.flatpickr-minute:hover {
+    background: #5a7d9a;
+}
+
+[data-theme="dark"] .flatpickr-hour,
+[data-theme="dark"] .flatpickr-minute,
+[data-theme="dark"] .flatpickr-am-pm {
+    color: var(--text-color-light);
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 0.625rem;
+    }
+
+    .app-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .input-container {
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    .reminder-container {
+        width: 100%;
+        justify-content: center;
+        max-width: unset; /* Remove max-width on smaller screens */
+    }
+
+    #reminderInput {
+        width: 100%;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-buttons {
+        justify-content: center;
+    }
+
+    .task-item {
+        padding: 0.9375rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.625rem;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 1.25rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .done-btn, .snooze-btn, .dismiss-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-top {
+        position: static; /* Adjust for smaller screens */
+        width: 100%;
+        padding: 0 1.875rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .app-header h1 {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-buttons {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        text-align: center;
+    }
+
+    .reminder-container {
+        flex-direction: row; /* Keep row for icon and input */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #reminderInput {
+        flex: 1; /* Allow input to take available space */
+    }
+
+    .reminder-btn {
+        margin-top: 0; /* Reset margin */
+    }
+}
